@@ -1,0 +1,64 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="PCG - Laba 2 - Image analyzer" Height="450" Width="800">
+    <Grid>
+        
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Select files" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="Button_Click" Padding="3,3,3,3"/>
+
+            <Button Content="Select Folder" HorizontalAlignment="Left" Margin="10,10,0,0" Height="24" Width="83" VerticalAlignment="Top" Click="Button_Click_1"/>
+            <StackPanel Height="25" Width="138" VerticalAlignment="Top" Margin="0,10,0,0">
+                <ComboBox ItemsSource="{Binding ExtItems}" Width="120" x:Name="ExtComboBox" VerticalAlignment="Top" SelectionChanged="ExtComboBox_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+        </StackPanel>
+
+        <ListView x:Name="list_view"  Margin="0,52,0,0" SelectionChanged="ListView_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Filename}"  Header="Filename" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Extension}"  Header="Extension" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Size}" Header="Size"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Resolution, StringFormat={}{0} DPI}" Header="Resolution"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ColorDepth}" Header="ColorDepth"/>
+                    <GridViewColumn  Header="ImageCompression">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{Binding Path=ImageCompression, StringFormat={}{0}%}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=ImageCompression}" Value="0">
+                                                    <Setter Property="Text" Value=""/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+            <ListView.Resources>
+                <Style TargetType="{x:Type GridViewColumnHeader}">
+                    <EventSetter Event="Click" Handler="GridViewColumnHeader_Click" />
+                </Style>
+            </ListView.Resources>
+        </ListView>
+    </Grid>
+</Window>
